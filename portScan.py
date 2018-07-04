@@ -665,6 +665,8 @@ if __name__ == '__main__':
         custom_port_list = [int(i) for i in custom_port_list]
         color_print('[*] Port: ' + str(custom_port_list), 'green')
         color_print('-'*60, 'blue')
+        if len(custom_port_list) < 1:
+            color_print('端口扫描失败, 请手动检查是否有防火墙!','red',True)
     # custom_port_list = [80, 445, 3306, 3389]
 
     audit(assign("ip", target_ip)[1])
