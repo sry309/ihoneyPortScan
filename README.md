@@ -33,8 +33,25 @@ BugScan是一款非常好的扫描器！
 python portScan.py 192.168.2.168
 ```
 ##### Example:   
-![example](example.png)
-
+![example](example.png)   
+```
+➜  djangotest git:(master) ✗ date && python portScan.py 58.215.160.2 && date
+2018年 7月 6日 星期五 01时46分37秒 CST
+------------------------------------------------------------
+[*] IP: 58.215.160.2
+Discovered open port 3306/tcp on 58.215.160.2ining, found=0
+Discovered open port 5050/tcp on 58.215.160.2ining, found=1
+Discovered open port 23334/tcp on 58.215.160.2ning, found=2
+Discovered open port 6379/tcp on 58.215.160.2ining, found=3
+[*] Port: [3306, 5050, 23334, 6379]
+------------------------------------------------------------
+[*] TCP: [3306, 5050, 6379, 23334]
+[*] 5050 => [www]; Ver => [('Server', 'TornadoServer/4.5.2')]
+[*] 3306 => [mysql]; Ver => J\x00\x00\x00\x0A5.6.23\x00\xB8\x9D\x00\x00OO{@ir~F\x00\xFF\xF7\x08\x02\x00\x7F\x80\x15\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00~iu/*$uC-XQn\x00mysql_native_password\x00
+[*] 23334 => [www]; Ver => [('Server', 'TornadoServer/4.5.2')]
+[*] 6379 => [redis]; Ver => 3.2.10
+2018年 7月 6日 星期五 01时48分36秒 CST
+```
 
 ### TODO
 * 支持多ip或ip段检测
