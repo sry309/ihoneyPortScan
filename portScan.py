@@ -5,6 +5,7 @@ import socket
 import time
 import select
 import sys
+import os
 import re
 import subprocess
 import threading
@@ -607,6 +608,8 @@ def audit(arg):
     if not (sockSend(host, 190, 5) or sockSend(host, 86, 5)):
         if custom_port_list is not None:
             ports += custom_port_list
+        # else:
+        #     ports += port_list()
         ports = set(ports)
 
     linkPort = []
@@ -627,7 +630,6 @@ def audit(arg):
         port.sort()
         targetList.append((port, serverScanObj))
 
-    scanResult = []
     okPort = []
     q = queue.Queue()
     for linkPort, serverScanObj in targetList:
@@ -648,8 +650,9 @@ if __name__ == '__main__':
     custom_port_list = None
     target_ip = sys.argv[1]
     threadnum = 20
+    limitNum = 80
     if target_ip:
-        color_print('-'*60, 'blue')
+        color_print('-' * 60, 'blue')
         color_print('[*] IP: %s' % target_ip, 'green')
         custom_port_list = []
         command = 'masscan -p 1-65535 {} --rate=1000'.format(target_ip)
@@ -662,11 +665,17 @@ if __name__ == '__main__':
                 color_print(output.strip(), 'blue')
                 custom_port_list.append(tg_port.groups()[0])
                 lock.release()
-        custom_port_list = [int(i) for i in custom_port_list]
-        color_print('[*] Port: ' + str(custom_port_list), 'green')
-        color_print('-'*60, 'blue')
-        if len(custom_port_list) < 1:
-            color_print('端口扫描失败, 请手动检查是否有防火墙!','red',True)
+            foundNumber = re.findall(r'found=(\d{1,5})', output)
+            if foundNumber:
+                if int(foundNumber[-1]) > int(limitNum):
+                    os.kill(child.pid, 9)
+                    # 59.111.14.159
+                    color_print('疑似有防火墙!存活端口' + str(foundNumber[-1]) + '个', 'red',True)
+    custom_port_list = [int(i) for i in custom_port_list]
+    color_print('[*] Port: ' + str(custom_port_list), 'green')
+    color_print('-' * 60, 'blue')
+    if len(custom_port_list) < 1:
+        color_print('端口扫描失败, 请手动检查是否有防火墙!', 'red', True)
     # custom_port_list = [80, 445, 3306, 3389]
 
     audit(assign("ip", target_ip)[1])
