@@ -15,6 +15,8 @@ masscan 结合 nmap 进行端口扫描与端口指纹识别
 ### 0x03 使用     
 ##### Usage:   
 ```
+python portScan.py --ip 192.168.2.168    
+python portScan.py --ip 192.168.2.168 -v    
 python portScan.py -p80-90,111,3308,3389,8080-9000,22222 -v --ip 192.168.2.168
 ```
 ##### Example:   
