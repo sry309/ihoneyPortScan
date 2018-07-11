@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# By T00ls.Net
 import time
 import sys
 import os
@@ -50,7 +51,13 @@ def nmapScan(host, port, arguments='-sV --script-args http.useragent="Mozilla/5.
         if v['state'] == 'open':
             color_print(result, 'yellow')
         else:
-            color_print(result, 'red')
+            color_print(result, 'orange')
+        if v['name'] == 'redis':
+            from plugins import redis_unauth
+            redis_url = str(host) + ':' + str(k)
+            result = redis_unauth.poc(redis_url)
+            if result == True:
+                color_print('[!] [WARN] {} 存在redis未授权访问漏洞'.format(redis_url), 'red')
 
 
 def masscanScan(target_ip, target_ports='1-65535'):
